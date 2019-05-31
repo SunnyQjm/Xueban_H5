@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">学伴H5</string>
+    <string name="load_fail">加载失败</string>
+</resources>
