@@ -28,20 +28,20 @@ fun Context.toast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT)
 }
 
 
-//fun Context.jumpTo(cls: Class<*>, intentParam: IntentParam? = null, vararg flags: Int) {
-//    val intent = Intent(this, cls)
-//    flags.forEach {
-//        intent.addFlags(it)
-//    }
+fun Context.jumpTo(cls: Class<*>, vararg flags: Int) {
+    val intent = Intent(this, cls)
+    flags.forEach {
+        intent.addFlags(it)
+    }
+    startActivity(intent)
+}
+
+fun Activity.jumpForResult(cls: Class<*>, requestCode: Int) {
+    val intent = Intent(this, cls)
 //    intentParam?.applyParam(intent)
-//    startActivity(intent)
-//}
-//
-//fun Activity.jumpForResult(cls: Class<*>, requestCode: Int, intentParam: IntentParam? = null) {
-//    val intent = Intent(this, cls)
-//    intentParam?.applyParam(intent)
-//    startActivityForResult(intent, requestCode)
-//}
+    startActivityForResult(intent, requestCode)
+}
+
 //
 //fun Fragment.jumpForResult(cls: Class<*>, requestCode: Int, intentParam: IntentParam? = null) {
 //    val intent = Intent(activity, cls)
