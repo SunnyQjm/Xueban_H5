@@ -28,6 +28,14 @@
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
 
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
+
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -37,5 +45,3 @@
  public *;
 }
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule

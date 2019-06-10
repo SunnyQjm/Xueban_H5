@@ -12,24 +12,35 @@ android:
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
-
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
 before_install:
-  - openssl aes-256-cbc -K $encrypted_77b808f930f3_key -iv $encrypted_77b808f930f3_iv
-    -in oureda.release.enc -out oureda.release -d
+  - openssl aes-256-cbc -K $encrypted_259f348dbbb5_key -iv $encrypted_259f348dbbb5_iv
+    -in keystore.jks.enc -out keystore.jks -d
   - gem install fir-cli
+
 
 jdk:
   - oraclejdk8
 before_script:
   - chmod +x gradlew
 script:
-  - ./gradlew assembleRelease
-#tags: true
+  - "./gradlew assembleRelease"
+  -
 before_deploy:
-#  - mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Xueban.apk
+  mv app/release/app-release.apk app/release/XuebanH5.apk
+
+deploy:
+  provider: releases
+  api_key:
+    secure: hHM1YALplyo+KgMEdeGkEryc9dFpHirpxWKSO2WHb2Vl9WZF9QfRAXcT0eCCIax7Dv/YNV9debPgufhDI143nJj+VGP3edsPbFrITRkNCbyyTrBVwThLbXH+TDvzoZ61bsMgyC6nqOmX1nFGXiJT9ae17CUIzNGcuxi/nZc8RMuBiOyflyGp8sHkm4eai30EI1qKOyhB+jNOo44SUL5sxydivChbJR25kK3pdYMwdH7bGDbuDVl2xoXtcJn0DlNLKv2qRqhRUZrpsCbKpZlPiOLiN8JvoE1DAdI7BbsfBpdjfpMEZ0CQjss6umQV0k5Ps1RqHee50yZfdKlyZiIPebolqJr/X7p3CWazkaxzT3NRYiQM8CbP108PsH6cSQb0huYY6wuFRwFSw4+y6oG6YJSREUV4xCUI2hWAJDBFZeFECBxCUcw38K3IUkCIGQpboKIGhQAylrk7EhZD5SEvK0EGiagwISARUelg3U7ljuIkf9qRikhtckbHIYmlGNjPoy27AqGtqnvg+33Y2nWwCYR6anyQc7UJt2Ql6GvLxez/83MyjVwPbmKxI/vwTGP9GWj8zosYGd1MR3HhqMN+0faMi9Fcmt6upyP1CDqtHK3otQY/5MpvYPIFnVHlMs5mnOYG52/VIxjSPYm9HFEvJswgLsSiAqcJPO7ukJ76bYE=
+  file: app/release/XuebanH5.apk
+  on:
+    repo: SunnyQjm/Xueban_H5
+    skip_cleanup: true
+
+after_deploy:
+  - fir publish app/release/XuebanH5.apk
