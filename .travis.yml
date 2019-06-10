@@ -32,6 +32,10 @@ script:
   - "./gradlew assembleRelease"
   -
 before_deploy:
+  ls app/release
+  ls app/
+  ls app/build
+  ls build
   mv app/release/app-release.apk app/release/XuebanH5.apk
 
 deploy:
