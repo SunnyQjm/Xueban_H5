@@ -1,7 +1,7 @@
 package cn.qjm253.xueban_h5.activity.qrcode
 
 import android.Manifest
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.qjm253.xueban_h5.R

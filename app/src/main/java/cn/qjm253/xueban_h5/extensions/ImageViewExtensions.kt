@@ -3,7 +3,7 @@ package cn.qjm253.xueban_h5.extensions
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import cn.qjm253.xueban_h5.GlideApp
 import com.bumptech.glide.load.resource.bitmap.VideoDecoder.FRAME_OPTION

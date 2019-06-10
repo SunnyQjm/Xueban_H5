@@ -1,7 +1,7 @@
 package cn.qjm253.xueban_h5.activity.main
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.JavascriptInterface
 import cn.qjm253.xueban_h5.R
