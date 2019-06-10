@@ -39,9 +39,9 @@ deploy:
   api_key:
     secure: hHM1YALplyo+KgMEdeGkEryc9dFpHirpxWKSO2WHb2Vl9WZF9QfRAXcT0eCCIax7Dv/YNV9debPgufhDI143nJj+VGP3edsPbFrITRkNCbyyTrBVwThLbXH+TDvzoZ61bsMgyC6nqOmX1nFGXiJT9ae17CUIzNGcuxi/nZc8RMuBiOyflyGp8sHkm4eai30EI1qKOyhB+jNOo44SUL5sxydivChbJR25kK3pdYMwdH7bGDbuDVl2xoXtcJn0DlNLKv2qRqhRUZrpsCbKpZlPiOLiN8JvoE1DAdI7BbsfBpdjfpMEZ0CQjss6umQV0k5Ps1RqHee50yZfdKlyZiIPebolqJr/X7p3CWazkaxzT3NRYiQM8CbP108PsH6cSQb0huYY6wuFRwFSw4+y6oG6YJSREUV4xCUI2hWAJDBFZeFECBxCUcw38K3IUkCIGQpboKIGhQAylrk7EhZD5SEvK0EGiagwISARUelg3U7ljuIkf9qRikhtckbHIYmlGNjPoy27AqGtqnvg+33Y2nWwCYR6anyQc7UJt2Ql6GvLxez/83MyjVwPbmKxI/vwTGP9GWj8zosYGd1MR3HhqMN+0faMi9Fcmt6upyP1CDqtHK3otQY/5MpvYPIFnVHlMs5mnOYG52/VIxjSPYm9HFEvJswgLsSiAqcJPO7ukJ76bYE=
   file: app/release/XuebanH5.apk
+  skip_cleanup: true
   on:
     repo: SunnyQjm/Xueban_H5
-    skip_cleanup: true
 
 after_deploy:
-  - fir publish app/release/XuebanH5.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
+  - fir publish app/build/outputs/apk/release/XuebanH5.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
