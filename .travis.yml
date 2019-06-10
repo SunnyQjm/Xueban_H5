@@ -43,4 +43,4 @@ deploy:
     skip_cleanup: true
 
 after_deploy:
-  - fir publish app/release/XuebanH5.apk
+  - fir publish app/release/XuebanH5.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
