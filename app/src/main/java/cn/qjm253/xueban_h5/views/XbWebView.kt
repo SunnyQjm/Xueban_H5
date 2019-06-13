@@ -54,8 +54,8 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
             override fun openFileChooser(p0: ValueCallback<Uri>?, p1: String?, p2: String?) {
                 rxPermissions
                     .request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribe {granted ->
-                        if(granted) {
+                    .subscribe { granted ->
+                        if (granted) {
                             openImageChooserActivity(context, p0)
                         }
                     }
@@ -68,8 +68,8 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
             ): Boolean {
                 rxPermissions
                     .request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribe {granted ->
-                        if(granted) {
+                    .subscribe { granted ->
+                        if (granted) {
                             openImageChooserActivity(context, null, p1)
                         }
                     }
@@ -82,35 +82,49 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
     /**
      * 打开图片选择
      */
-    private fun openImageChooserActivity(context: Context, valueCallback: ValueCallback<Uri>? = null,
-                                         valueCallback2: ValueCallback<Array<Uri>>? = null) {
+    private fun openImageChooserActivity(
+        context: Context, valueCallback: ValueCallback<Uri>? = null,
+        valueCallback2: ValueCallback<Array<Uri>>? = null
+    ) {
         context.selector("选择获取图片方式", listOf("拍照", "相册")) { _, i ->
             when (i) {
                 0 -> {          // 拍照
                     // 使用摄像头拍摄
                     RxImagePicker.create()
                         .openCamera(context)
-                        .subscribe {result ->
+                        .subscribe { result ->
                             valueCallback?.onReceiveValue(result.uri)
                             valueCallback2?.onReceiveValue(arrayOf(result.uri))
                         }
                 }
                 1 -> {          // 相册选择
+                    val result = mutableListOf<Uri>()
                     // 打开相册选择
                     RxImagePicker.create(MyImagePicker::class.java)
                         .openGallery(
                             context,
                             WechatConfigrationBuilder(MimeType.INSTANCE.ofImage(), false)
-                                .maxSelectable(1)
+                                .maxSelectable(9)
                                 .countable(true)
                                 .spanCount(4)
                                 .countable(false)
                                 .build()
                         )
-                        .subscribe { result ->
-                            valueCallback?.onReceiveValue(result.uri)
-                            valueCallback2?.onReceiveValue(arrayOf(result.uri))
-                        }
+                        .subscribe({ res ->
+                            // onNext
+                            result.add(res.uri)
+                        }, {
+                            // onError
+
+                        }, {
+                            // onComplete
+                            if(result.size <= 0) {
+                                valueCallback2?.onReceiveValue(null)
+                            } else {
+                                valueCallback2?.onReceiveValue(result.toTypedArray())
+                            }
+                        })
+
                 }
             }
         }
