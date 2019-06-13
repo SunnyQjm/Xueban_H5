@@ -47,6 +47,16 @@ class AndroidToJs(val context: Activity, val webView: XbWebView) {
 
 
     /**
+     * 选择图片
+     */
+    @JavascriptInterface
+    fun selectPicture() {
+
+    }
+
+
+
+    /**
      * 调用Js的回调函数，并且支持传递一个字符串参数
      */
     fun callJs(callbackName: String, param: String? = "", callback: ValueCallback<String> = ValueCallback {  }) {

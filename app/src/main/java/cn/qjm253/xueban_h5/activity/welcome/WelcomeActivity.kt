@@ -9,8 +9,8 @@ import android.view.View
 import android.view.WindowManager
 import cn.qjm253.xueban_h5.GlideApp
 import cn.qjm253.xueban_h5.R
-import cn.qjm253.xueban_h5.activity.main.MainActivity
-import cn.qjm253.xueban_h5.activity.qrcode.QrCodeActivity
+import cn.qjm253.xueban_h5.activity.webview.WebViewActivity
+import cn.qjm253.xueban_h5.extensions.jumpTo
 import cn.qjm253.xueban_h5.utils.ConstellationUtil
 import kotlinx.android.synthetic.main.activity_welcome.*
 
@@ -46,7 +46,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         img_constellation.postDelayed({
 //            startActivity(Intent(this, QrCodeActivity::class.java))
-            startActivity(Intent(this, MainActivity::class.java))
+            jumpTo(WebViewActivity::class.java)
             finish()
         }, 500)
     }

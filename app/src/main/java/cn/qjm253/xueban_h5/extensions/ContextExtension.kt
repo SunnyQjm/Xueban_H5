@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import cn.qjm253.xueban_h5.model.params.IntentParam
 //import cn.smssdk.EventHandler
 //import cn.smssdk.SMSSDK
 //import cn.smssdk.gui.RegisterPage
@@ -39,6 +40,21 @@ fun Context.jumpTo(cls: Class<*>, vararg flags: Int) {
 fun Activity.jumpForResult(cls: Class<*>, requestCode: Int) {
     val intent = Intent(this, cls)
 //    intentParam?.applyParam(intent)
+    startActivityForResult(intent, requestCode)
+}
+
+fun Context.jumpTo(cls: Class<*>, intentParam: IntentParam? = null, vararg flags: Int) {
+    val intent = Intent(this, cls)
+    flags.forEach {
+        intent.addFlags(it)
+    }
+    intentParam?.applyParam(intent)
+    startActivity(intent)
+}
+
+fun Activity.jumpForResult(cls: Class<*>, requestCode: Int = 0, intentParam: IntentParam? = null) {
+    val intent = Intent(this, cls)
+    intentParam?.applyParam(intent)
     startActivityForResult(intent, requestCode)
 }
 

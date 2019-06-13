@@ -11,7 +11,12 @@ import com.gyf.immersionbar.ImmersionBar
 import com.tencent.smtt.export.external.interfaces.WebResourceError
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class WebViewActivity : AppCompatActivity() {
+
+    companion object {
+        const val PARAM_URL = "PARAM_URL"
+    }
 
     private lateinit var androidToJs: AndroidToJs
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,15 +30,14 @@ class WebViewActivity : AppCompatActivity() {
         // 初始化 Android 和 Js 交互操作
         androidToJs = AndroidToJs(this, webView)
         webView.addJavascriptInterface(androidToJs, AndroidToJs.JS_CALLER_NAME)
-        webView.loadUrl("https://xueban.qjm253.cn/h5")
-//        webView.loadUrl("file:///android_asset/www/index.html")
+        val url = intent?.getStringExtra(PARAM_URL) ?: "https://xueban.qjm253.cn/h5"
+        webView.loadUrl(url)
         webView.onWebViewLoadListener = object : XbWebView.OnWebViewLoadListener {
             override fun onLoadFail(error: WebResourceError) {
 //                toast(R.string.load_fail)
             }
 
             override fun onLoadSuccess() {
-                loading.progress = 10
             }
 
             override fun onProgress(progress: Int) {
@@ -45,12 +49,13 @@ class WebViewActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode) {
+        when (requestCode) {
             AndroidToJs.REQUEST_CODE_SCAN -> {          // 调用扫描接口的返回结果
                 data?.let {
                     // 扫描的结果
@@ -61,8 +66,6 @@ class WebViewActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 
     override fun onBackPressed() {

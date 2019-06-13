@@ -1,14 +1,20 @@
 package cn.qjm253.xueban_h5.views
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
+import androidx.fragment.app.FragmentActivity
+import cn.qjm253.xueban_h5.utils.MyImagePicker
+import com.qingmei2.rximagepicker.core.RxImagePicker
+import com.qingmei2.rximagepicker_extension.MimeType
+import com.qingmei2.rximagepicker_extension_zhihu.ZhihuConfigurationBuilder
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.tencent.smtt.export.external.interfaces.WebResourceError
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
-import com.tencent.smtt.sdk.WebChromeClient
-import com.tencent.smtt.sdk.WebSettings
-import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
+import com.tencent.smtt.sdk.*
+import org.jetbrains.anko.selector
 
 class XbWebView(context: Context, attributeSet: AttributeSet) :
     WebView(context, attributeSet) {
@@ -16,6 +22,7 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
     var onWebViewLoadListener: OnWebViewLoadListener? = null
 
     init {
+        val rxPermissions = RxPermissions(context as FragmentActivity)
         this.webViewClient = object : WebViewClient() {
 
             /**
@@ -43,8 +50,64 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
                 super.onProgressChanged(p0, p1)
                 onWebViewLoadListener?.onProgress(p1)
             }
+
+            override fun openFileChooser(p0: ValueCallback<Uri>?, p1: String?, p2: String?) {
+                openImageChooserActivity(context, p0)
+            }
+
+            override fun onShowFileChooser(
+                p0: WebView?,
+                p1: ValueCallback<Array<Uri>>?,
+                p2: FileChooserParams?
+            ): Boolean {
+                rxPermissions
+                    .request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribe {granted ->
+                        if(granted) {
+                            openImageChooserActivity(context, null, p1)
+                        }
+                    }
+                return true
+            }
         }
         initWebViewSettings()
+    }
+
+    /**
+     * 打开图片选择
+     */
+    private fun openImageChooserActivity(context: Context, valueCallback: ValueCallback<Uri>? = null,
+                                         valueCallback2: ValueCallback<Array<Uri>>? = null) {
+        context.selector("选择获取图片方式", listOf("拍照", "相册")) { _, i ->
+            when (i) {
+                0 -> {          // 拍照
+                    // 使用摄像头拍摄
+                    RxImagePicker.create()
+                        .openCamera(context)
+                        .subscribe {result ->
+                            valueCallback?.onReceiveValue(result.uri)
+                            valueCallback2?.onReceiveValue(arrayOf(result.uri))
+                        }
+                }
+                1 -> {          // 相册选择
+                    // 打开相册选择
+                    RxImagePicker.create(MyImagePicker::class.java)
+                        .openGallery(
+                            context,
+                            ZhihuConfigurationBuilder(MimeType.INSTANCE.ofImage(), false)
+                                .maxSelectable(9)
+                                .countable(true)
+                                .spanCount(4)
+                                .countable(false)
+                                .build()
+                        )
+                        .subscribe { result ->
+                            valueCallback?.onReceiveValue(result.uri)
+                            valueCallback2?.onReceiveValue(arrayOf(result.uri))
+                        }
+                }
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
