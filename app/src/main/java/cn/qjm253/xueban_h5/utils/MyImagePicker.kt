@@ -5,13 +5,13 @@ import com.qingmei2.rximagepicker.entity.Result
 import com.qingmei2.rximagepicker.entity.sources.Camera
 import com.qingmei2.rximagepicker.entity.sources.Gallery
 import com.qingmei2.rximagepicker.ui.ICustomPickerConfiguration
-import com.qingmei2.rximagepicker_extension_zhihu.ui.ZhihuImagePickerActivity
+import com.qingmei2.rximagepicker_extension_wechat.ui.WechatImagePickerActivity
 import io.reactivex.Observable
 
 interface MyImagePicker {
     // 打开相册选择图片
     @Gallery(
-        componentClazz = ZhihuImagePickerActivity::class,
+        componentClazz = WechatImagePickerActivity::class,
         openAsFragment = false
     )
     fun openGallery(context: Context, config: ICustomPickerConfiguration):

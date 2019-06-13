@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import cn.qjm253.xueban_h5.utils.MyImagePicker
 import com.qingmei2.rximagepicker.core.RxImagePicker
 import com.qingmei2.rximagepicker_extension.MimeType
-import com.qingmei2.rximagepicker_extension_zhihu.ZhihuConfigurationBuilder
+import com.qingmei2.rximagepicker_extension_wechat.WechatConfigrationBuilder
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.tencent.smtt.export.external.interfaces.WebResourceError
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
@@ -52,7 +52,13 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
             }
 
             override fun openFileChooser(p0: ValueCallback<Uri>?, p1: String?, p2: String?) {
-                openImageChooserActivity(context, p0)
+                rxPermissions
+                    .request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribe {granted ->
+                        if(granted) {
+                            openImageChooserActivity(context, p0)
+                        }
+                    }
             }
 
             override fun onShowFileChooser(
@@ -94,8 +100,8 @@ class XbWebView(context: Context, attributeSet: AttributeSet) :
                     RxImagePicker.create(MyImagePicker::class.java)
                         .openGallery(
                             context,
-                            ZhihuConfigurationBuilder(MimeType.INSTANCE.ofImage(), false)
-                                .maxSelectable(9)
+                            WechatConfigrationBuilder(MimeType.INSTANCE.ofImage(), false)
+                                .maxSelectable(1)
                                 .countable(true)
                                 .spanCount(4)
                                 .countable(false)

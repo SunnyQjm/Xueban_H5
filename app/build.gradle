@@ -75,8 +75,8 @@ dependencies {
     implementation "com.github.qingmei2:rximagepicker_support:${rx_image_picker_version}"
 
 // 如果需要额外的UI支持，请选择依赖对应的UI拓展库
-    implementation "com.github.qingmei2:rximagepicker_support_zhihu:${rx_image_picker_version}"     // 知乎图片选择器
-//    implementation "com.github.qingmei2:rximagepicker_support_wechat:${rx_image_picker_version}"    // 微信图片选择器
+//    implementation "com.github.qingmei2:rximagepicker_support_zhihu:${rx_image_picker_version}"     // 知乎图片选择器
+    implementation "com.github.qingmei2:rximagepicker_support_wechat:${rx_image_picker_version}"    // 微信图片选择器
 
 //    implementation 'com.github.SunnyQjm:DCIMDemo:v1.1.0'
 
